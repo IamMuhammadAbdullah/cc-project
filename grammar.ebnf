@@ -1,12 +1,21 @@
 <program> ::= <statement>+
-<statement> ::= <command> | <loop>
-<command> ::= ("MOVE" | "TURN") <expression> | "COLOR" <hex_color>
-<loop> ::= "REPEAT" <number> "[" <program> "]"
+<statement> ::= <command> | <loop> | <conditional>
+<command> ::= "MOVE" <expression>
+            | "TURN" <expression>
+            | "SET_POS" "(" <expression> "," <expression> ")"
+            | "COLOR" <color>
+            | "RECT" "(" <expression> "," <expression> ")" "(" <expression> "," <expression> ")"
+            | "LET" <identifier> "=" <expression>
+<loop> ::= "REPEAT" <expression> "[" <statement>* "]"
+<conditional> ::= "IF" "ON_COLOR" <color> "[" <statement>* "]"
 <expression> ::= <term> (("+" | "-") <term>)*
 <term> ::= <factor> (("*" | "/") <factor>)*
-<factor> ::= <number> | "(" <expression> ")"
+<factor> ::= <number> | <identifier> | "(" <expression> ")" | ("+" | "-") <factor>
 
 // Lexical Tokens
-<number> ::= [0-9]+
+<number> ::= [0-9]+ ("." [0-9]*)?
 <hex_color> ::= "#" [0-9a-fA-F]{6}
+<color> ::= <hex_color> | <identifier>
+<identifier> ::= [A-Za-z_] [A-Za-z0-9_]*
 <whitespace> ::= [ \t\n\r]+ // Ignored in parsing
+<comment> ::= "//" .* // Ignored in parsing
