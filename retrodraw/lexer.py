@@ -24,7 +24,7 @@ class Lexer:
         ('COMMA',     r','),                       
         ('ASSIGN',    r'='),                       
         ('WS',        r'[ \t]+'),                  
-        ('NEWLINE',   r'\n'),                      
+        ('NEWLINE',   r'\r\n|\r|\n'),              
         ('MISMATCH',  r'.'),                       
     ]
 

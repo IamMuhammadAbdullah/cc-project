@@ -1,5 +1,4 @@
 from .parser import *
-import math
 import turtle
 
 class Interpreter:
@@ -110,18 +109,18 @@ class Interpreter:
 
     def is_on_color(self, color_value: str) -> bool:
         target = self.resolve_color(color_value).lower()
-        canvas = self.t.getscreen().cv
-        heading = self.t.heading()
+        screen = self.t.getscreen()
+        canvas = screen.cv
         x, y = self.t.position()
-        rad = math.radians(heading)
-        check_x = x + 3 * math.cos(rad)
-        check_y = y + 3 * math.sin(rad)
 
-        canvas_x = canvas.winfo_width() / 2 + check_x
-        canvas_y = canvas.winfo_height() / 2 - check_y
+        canvas_x = x * screen.xscale
+        canvas_y = -y * screen.yscale
         for item_id in canvas.find_overlapping(canvas_x - 2, canvas_y - 2, canvas_x + 2, canvas_y + 2):
             for option in ('fill', 'outline'):
-                item_color = canvas.itemcget(item_id, option)
+                try:
+                    item_color = canvas.itemcget(item_id, option)
+                except Exception:
+                    continue
                 if item_color and item_color.lower() == target:
                     return True
         return False
